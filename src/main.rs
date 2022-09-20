@@ -17,7 +17,6 @@ impl FromStr for Point {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let (x, y) = s.split_once(",").unwrap();
-        println!("{}:{}", x,y);
         return Ok(Point{
             x: x.parse().unwrap(),
             y: y.parse().unwrap(),
@@ -30,7 +29,7 @@ impl FromStr for Fold {
     type Err = std::string::ParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let (axis, value) = s.split_once("fold along")
+        let (axis, value) = s.split_once("fold along ")
         .unwrap().
         1
         .split_once("=")
@@ -45,20 +44,21 @@ impl FromStr for Fold {
 
 fn main() {
    // env::set_var("RUST_BACKTRACE", "1");
-    let (points, folds) = include_str!("./sample.in")
+    let (points,folds) = include_str!("./sample.in")
     .trim()
     .split_once("\n\n")
     .unwrap();
+    println!("{}",folds);
     let points: Vec<Point> = points.lines()
     .map(str::parse)
     .map(Result::unwrap)
     .collect();
-    let folds: Vec<Point> = folds.lines()
+    let folds: Vec<Fold> = folds.lines()
     .map(str::parse)
     .map(Result::unwrap)
     .collect();
     for p in points {
-        println!("x : {:?} - y : {:?}", p.x,p.y);
+        println!("{:?}", p);
     }
 
     for f in folds {
